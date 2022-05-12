@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
             'role_id' => 1
         ];
 
-        User::insert($admin_user);
+        DB::table('users')->insert($admin_user);
+        
     }
 }
