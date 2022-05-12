@@ -1,0 +1,26 @@
+
+body {
+    background: #AEADAE !important;
+}
+
+.auth-logo {
+    width: 100%;
+    height: auto;
+}
+
+.form-control {
+    margin-bottom: 25px;
+}
+
+.form-section {
+    background-color: #fff;
+    padding: 7% 0;
+    border-radius: 10px;
+}
+
+
+
+
+.h-100vh {
+    height: 100vh;
+}
