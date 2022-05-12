@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('last_login');
             $table->rememberToken();
             $table->timestamps();
+            $table->boolean('active');
         });
     }
 
