@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\v1;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -37,34 +38,42 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'lastname' => 'required|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => 'required|max:255',
-        ]);
-
-        if($validated){
-            $data = [
-                'name' => $request->name,
-                'lastname' => $request->lastname,
-                'email' => $request->email,
-                'password' => $request->password
-            ]; 
-
-            $newUser = User::create([
-                'name' => $data['name'],
-                'lastname' => $data['lastname'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'last_login' => new Date(),
-                'active' => true,
-                'role_id' => 3
+        
+        try {
+            $validated = $request->validate([
+                'name' => 'required|max:255',
+                'lastname' => 'required|max:255',
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => 'required|max:255',
             ]);
-
-            return response()->json($newUser, 201);
-        } else {
-            throw new Exception("Invalid user information", 1);   
+    
+            if($validated){
+                $data = [
+                    'name' => $request->name,
+                    'lastname' => $request->lastname,
+                    'email' => $request->email,
+                    'password' => $request->password
+                ]; 
+    
+                $newUser = User::create([
+                    'name' => $data['name'],
+                    'lastname' => $data['lastname'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'last_login' => now(),
+                    'active' => true,
+                    'role_id' => 3
+                ]);
+    
+                return response()->json($newUser, 201);
+            } else {
+                return response()->json("Invalid user information", 422);   
+            }
+        } catch (\Throwable $th) {
+            if($th->status == 422){
+                return response()->json($th, 422);
+            }
+            return response()->json($th, 500);   
         }
 
     }

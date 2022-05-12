@@ -18,8 +18,10 @@ body {
     border-radius: 10px;
 }
 
-
-
+#errorAlert {
+    position: sticky;
+    bottom: 2vh;
+}
 
 .h-100vh {
     height: 100vh;
