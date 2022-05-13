@@ -2,6 +2,13 @@
 const user = JSON.parse(localStorage.getItem('user'));
 const token = JSON.parse(localStorage.getItem('token'));
 
+if(!user || !token){
+    localStorage.clear()
+    window.location.href = "/auth/login"
+}
+
+let blogSelected = null;
+
 getBlogs();
 
 function getBlogs() {
@@ -13,9 +20,9 @@ function getBlogs() {
         success: (data, textStatus, xhr) => {
             if (xhr.status === 200) {
                 //Render blogs
-                
-                data.data.forEach(blog => {
-                    $('#blogs-container').append(getBlogHtml(blog, blog.id))
+                localStorage.setItem('blogs', JSON.stringify(data.data));
+                data.data.forEach((blog, index) => {
+                    $('#blogs-container').append(getBlogHtml(blog, index))
                 });
 
                 const prev = data.first_page_url ?? data.prev_page_url;
@@ -46,17 +53,24 @@ function getBlogs() {
         }
     })
 }
-
+// modalEditBlog
 function getBlogHtml(data, id) {
     return `<div class="card" style="width: 100%;">
         <div class="card-body">
             <h5 class="card-title">${data.title}</h5>
             <h6 class="card-subtitle mb-2 text-muted">By ${data.user.name} ${data.user.lastname}</h6>
             <p class="card-text">${data.description}</p>
-            <a class="btn btn-primary" id="blog-update-${id}">Update</a>
-            <a class="btn btn-danger" id="blog-delete-${id}">Delete</a>
+            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditBlog" onclick=(selectBlog(${id}))>Update</a>
+            <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEditBlog" onclick=(deleteBlog(${id}))>Delete</a>
         </div>
     </div> <hr>`;
+}
+
+function selectBlog(index) {
+    const blogs = JSON.parse(localStorage.getItem('blogs'));
+    blogSelected = blogs[index];
+    $('#blogTitle').val(blogs[index].title)
+    $('#descriptionBlog').val(blogs[index].description)
 }
 
 function getSelect(data) {
@@ -64,7 +78,7 @@ function getSelect(data) {
 
     for (let index = 0; index < data.last_page; index++) {
 
-        const element = index+1 === data.current_page ?
+        const element = index + 1 === data.current_page ?
             `<option value="${index + 1}" selected>${index + 1}</option> ` :
             `<option value="${index + 1}">${index + 1}</option> `;
         options += element;
@@ -89,6 +103,7 @@ function getLink(link) {
         success: (data, textStatus, xhr) => {
             if (xhr.status === 200) {
                 //Render blogs
+                localStorage.setItem('blogs', JSON.stringify(data.data));
                 $('#blogs-container').empty();
                 data.data.forEach(blog => {
                     $('#blogs-container').append(getBlogHtml(blog, blog.id))
@@ -132,6 +147,7 @@ function getPage(page) {
         success: (data, textStatus, xhr) => {
             if (xhr.status === 200) {
                 //Render blogs
+                localStorage.setItem('blogs', JSON.stringify(data.data));
                 $('#blogs-container').empty();
                 data.data.forEach(blog => {
                     $('#blogs-container').append(getBlogHtml(blog, blog.id))
@@ -165,4 +181,53 @@ function getPage(page) {
         }
     })
 }
+
+$('#blogForm').on('submit', (e) => {
+    e.preventDefault();
+
+    const data = {
+        title: $('#blogTitle').val(),
+        description: $('#descriptionBlog').val(),
+    }
+
+    $.ajax({
+        url: `/api/v1/blog/${blogSelected.id}`,
+        type: 'PUT',
+        data: data,
+        headers: { "Authorization": token },
+        success: (data, textStatus, xhr) => {
+            if (xhr.status === 200) {
+                
+                Swal.fire({
+                    title: "Blog updated!",
+                    confirmButtonText: "Accept",
+                    icon: 'success',
+                    confirmButtonColor: "#0B5ED7"
+                }).then(res => {
+                    window.location.reload()
+                })
+            }
+        },
+        error: (xhr) => {
+            if (xhr.status === 422) {
+                Swal.fire({
+                    title: "Problems updating your blog",
+                    text: "Verify if you have complete correctly the fields.",
+                    confirmButtonText: "Accept",
+                    icon: 'error',
+                    confirmButtonColor: "#0B5ED7"
+                })
+            } else {
+                Swal.fire({
+                    title: "We are having some issues",
+                    text: "Please try again in a couple of minutes. If this error continues, please contact to support.",
+                    confirmButtonText: "Accept",
+                    icon: 'error',
+                    confirmButtonColor: "#0B5ED7"
+                })
+            }
+        }
+    })
+
+})
 

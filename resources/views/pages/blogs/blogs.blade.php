@@ -20,10 +20,32 @@
                     <div class="col-4">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination" id="paginator">
-                                
+
                             </ul>
                         </nav>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="modalEditBlog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="blogForm" class="w-100">
+                        <input style="margin-bottom: 25px;" class="form-control w-100" type="text"
+                            placeholder="Title" id="blogTitle">
+                        <div class="form-floating" style="margin-bottom: 25px;">
+                            <textarea id="descriptionBlog" class="form-control" style="height: 100px;" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                            <label for="floatingTextarea">Description</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Update blog</button>
+                    </form>
                 </div>
             </div>
         </div>

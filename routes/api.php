@@ -20,25 +20,25 @@ use Illuminate\Http\Request;
 //'middleware' => 'auth:api'
 Route::group(['prefix' => 'v1',], function($router){
 
-    /*
-    |-------------------------------------------------------------------------------
-    | Users
-    |-------------------------------------------------------------------------------
-    | URL:            /api/v1/auth
-    | Controller:     api\v1\LoginController
-    | Method:         POST DELETE
-    | Description:    Users' CRUD
-    */
-    
-
-    Route::group(['prefix' => 'auth'], function ($router) {
-      Route::post('login', 'api\v1\LoginController@login');
-      Route::delete('logout', 'api\v1\LoginController@logout');
-      // Route::post('refresh', 'AuthController@refresh');
-      // Route::post('me', 'AuthController@me');
-  });
-    
+  /*
+  |-------------------------------------------------------------------------------
+  | Auth - NO TOKEN NEEDED
+  |-------------------------------------------------------------------------------
+  | URL:            /api/v1/auth
+  | Controller:     api\v1\LoginController
+  | Method:         POST DELETE
+  | Description:    Users' CRUD
+  */
   
+
+  Route::group(['prefix' => 'auth'], function ($router) {
+    Route::post('login', 'api\v1\LoginController@login');
+    Route::delete('logout', 'api\v1\LoginController@logout');
+    // Route::post('refresh', 'AuthController@refresh');
+    // Route::post('me', 'AuthController@me');
+  });
+  
+  Route::group(['middleware' => 'api'], function($router){
     /*
     |-------------------------------------------------------------------------------
     | Roles
@@ -83,8 +83,7 @@ Route::group(['prefix' => 'v1',], function($router){
     Route::get('/blog/{id}', 'api\v1\BlogController@show');
     Route::put('/blog/{id}', 'api\v1\BlogController@update');
     Route::delete('/blog/{id}', 'api\v1\BlogController@delete');
-
-
-
-    
   });
+
+  
+});

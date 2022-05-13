@@ -1,7 +1,10 @@
 const user = JSON.parse(localStorage.getItem('user'));
 const token = JSON.parse(localStorage.getItem('token'));
 
-
+if(!user || !token){
+    localStorage.clear()
+    window.location.href = "/auth/login"
+}
 
 $('#blogForm').on('submit', (e) => {
     e.preventDefault();

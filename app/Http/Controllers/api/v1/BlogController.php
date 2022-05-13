@@ -119,12 +119,11 @@ class BlogController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $data = $request->only(['title', 'description']);
 
             $blog = Blog::find($id)->first();
 
-            $blog->title = $data->title;
-            $blog->description = $data->description;
+            $blog->title = $request->title;
+            $blog->description = $request->description;
 
             $blog->save(); 
             

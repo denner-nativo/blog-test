@@ -2,6 +2,11 @@
 const user = JSON.parse(localStorage.getItem('user'));
 const token = JSON.parse(localStorage.getItem('token'));
 
+if(!user || !token){
+    localStorage.clear()
+    window.location.href = "/auth/login"
+}
+
 getData()
 
 function getData() {
@@ -60,6 +65,7 @@ $('#modalEdit').on('submit', (e) => {
         url: `/api/v1/user/${user.id}`,
         type: 'PUT',
         data: data,
+        headers: { "Authorization": token },
         success: (data, textStatus, xhr) => {
             if (xhr.status === 200) {
                 user.name = data.name;
