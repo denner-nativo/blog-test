@@ -66,6 +66,23 @@ Route::group(['prefix' => 'v1',], function($router){
     Route::put('/user/{id}', 'api\v1\UserController@update');
     Route::delete('/user/{id}', 'api\v1\UserController@delete');
 
+    /*
+    |-------------------------------------------------------------------------------
+    | Blog
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/blogs ---- /api/v1/blog
+    | Controller:     api\v1\BlogController
+    | Method:         GET POST PUT DELETE
+    | Description:    Blogs' CRUD
+    */
+
+    Route::post('/blog', 'api\v1\BlogController@store');
+    Route::get('/blogs', 'api\v1\BlogController@index');
+    Route::get('/blogs/{userid}', 'api\v1\BlogController@getAllByUser');
+    Route::get('/blog/{id}', 'api\v1\BlogController@show');
+    Route::put('/blog/{id}', 'api\v1\BlogController@update');
+    Route::delete('/blog/{id}', 'api\v1\BlogController@delete');
+
 
 
     

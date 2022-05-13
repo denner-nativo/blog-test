@@ -15,8 +15,14 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::all()->where('active', true);
+        $blogs = Blog::all()->where('active', true)->user;
 
+        return response()->json($blogs, 200);
+    }
+
+    public function getAllByUser($userid)
+    {
+        $blogs = Blog::all()->where('active', true)->where('user_id', $userid)->user;
         return response()->json($blogs, 200);
     }
 
