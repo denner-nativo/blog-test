@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/auth/login.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -26,9 +27,9 @@
                     <div class="col-12" style="margin-top: 25px"></div>
                     {{-- Form --}}
                     <div class="col-md-6 col-12">
-                        <form action="" method="post" class="w-100">
-                            <input class="form-control w-100" type="email" placeholder="Email">
-                            <input class="form-control w-100" type="password" placeholder="Password">
+                        <form id="loginForm" class="w-100">
+                            <input class="form-control w-100" type="email" placeholder="Email" id="emailLogin">
+                            <input class="form-control w-100" type="password" placeholder="Password" id="passwordLogin">
                             <button type="submit" class="btn btn-primary w-100">Log in</button>
                             <div class="row justify-content-end" style="margin-top: 15px">
                                 <div class="col-6">
@@ -48,7 +49,10 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
 
-    
+    {{-- Sweetalert 2 --}}
+    <script src="{{ url('js/auth/login.js') }}"></script>
+
+
 </body>
 
 </html>

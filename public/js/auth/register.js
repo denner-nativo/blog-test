@@ -6,7 +6,7 @@ $("#registerForm").on('submit', (e) => {
     const data = {
         name: $('#name').val().trim(),
         lastname: $('#lastname').val().trim(),
-        email: $('#email').val().trim(),
+        email: $('#email').val().toLowerCase().trim(),
         password: $('#password').val().trim(),
         confirmPassword: $('#confirmPassword').val().trim(),
         __token: $('input[name="_token"]').val(),
