@@ -79,6 +79,7 @@ Route::group(['prefix' => 'v1',], function($router){
     Route::post('/blog', 'api\v1\BlogController@store');
     Route::get('/blogs', 'api\v1\BlogController@index');
     Route::get('/blogs/{userid}', 'api\v1\BlogController@getAllByUser');
+    Route::get('/blogs/counter/{userid}', 'api\v1\BlogController@getCountBlogsByUser');
     Route::get('/blog/{id}', 'api\v1\BlogController@show');
     Route::put('/blog/{id}', 'api\v1\BlogController@update');
     Route::delete('/blog/{id}', 'api\v1\BlogController@delete');

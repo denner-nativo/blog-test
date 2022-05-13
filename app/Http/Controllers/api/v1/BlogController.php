@@ -15,19 +15,28 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::all()->where('active', true)->user;
+        $blogs = Blog::all()->where('active', true)->paginate(20);
+        for ($i=0; $i < count($blogs); $i++) { 
+            $blogs[$i]->user = $blogs[$i]->user;
+        }
 
         return response()->json($blogs, 200);
     }
 
     public function getAllByUser($userid)
     {
-        $blogs = Blog::all()->where('active', true)->where('user_id', $userid);
+        $blogs = Blog::where('active', true)->where('user_id', $userid)->paginate(20);
         
         for ($i=0; $i < count($blogs); $i++) { 
             $blogs[$i]->user = $blogs[$i]->user;
         }
         
+        return response()->json($blogs, 200);
+    }
+
+    public function getCountBlogsByUser($userid)
+    {
+        $blogs = Blog::where('active', true)->where('user_id', $userid)->count();        
         return response()->json($blogs, 200);
     }
 
@@ -110,14 +119,12 @@ class BlogController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $data = $request->only(['title', 'description', 'user_id','active']);
+            $data = $request->only(['title', 'description']);
 
             $blog = Blog::find($id)->first();
 
             $blog->title = $data->title;
             $blog->description = $data->description;
-            $blog->user_id = $data->user_id;
-            $blog->active = $data->active;
 
             $blog->save(); 
             

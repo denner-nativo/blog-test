@@ -109,7 +109,6 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->lastname = $request->lastname;
         $user->email = $request->email;
-        $user->last_login = $request->last_login;
         $user->role_id = $request->role_id;
         
         $user->save();
