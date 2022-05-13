@@ -52,23 +52,16 @@ class UserController extends Controller
                     'name' => $request->name,
                     'lastname' => $request->lastname,
                     'email' => $request->email,
-                    'password' => $request->password
-                ]; 
-    
-                $newUser = User::create([
-                    'name' => $data['name'],
-                    'lastname' => $data['lastname'],
-                    'email' => $data['email'],
-                    'password' => Hash::make($data['password']),
+                    'password' => Hash::make($request->password),
                     'last_login' => now(),
                     'active' => true,
                     'role_id' => 3
-                ]);
+                ]; 
+    
+                $newUser = User::create($data);
     
                 return response()->json($newUser, 201);
-            } else {
-                return response()->json("Invalid user information", 422);   
-            }
+            } 
         } catch (\Throwable $th) {
             if($th->status == 422){
                 return response()->json($th, 422);
