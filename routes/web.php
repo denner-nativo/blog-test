@@ -11,14 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('dashboard', function () {
+    return view('pages.dashboard');
 });
 
+Route::get('blogs', function () {
+    return view('pages.blogs.blogs');
+});
+Route::get('blogs/new', function () {
+    return view('pages.blogs.newBlog');
+});
 
 Route::get('auth/login', function () {
     return view('auth.login');
 });
+
 Route::get('auth/sign-up', function () {
     return view('auth.signUp');
 });

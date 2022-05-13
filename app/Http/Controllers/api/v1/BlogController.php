@@ -22,7 +22,12 @@ class BlogController extends Controller
 
     public function getAllByUser($userid)
     {
-        $blogs = Blog::all()->where('active', true)->where('user_id', $userid)->user;
+        $blogs = Blog::all()->where('active', true)->where('user_id', $userid);
+        
+        for ($i=0; $i < count($blogs); $i++) { 
+            $blogs[$i]->user = $blogs[$i]->user;
+        }
+        
         return response()->json($blogs, 200);
     }
 
